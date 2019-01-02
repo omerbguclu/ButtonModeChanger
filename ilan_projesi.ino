@@ -74,11 +74,4 @@ void loop() {
     }
   }
   lastButton = currentButton;
-
-//  currentButton = debounce(lastButton);
-//  if (lastButton == LOW && currentButton == HIGH)
-//  {
-//    modChange(ledPin, shortState);
-//  }
-//  lastButton = currentButton;
 }
