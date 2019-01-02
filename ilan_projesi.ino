@@ -9,7 +9,7 @@ boolean currentButton = LOW;
 
 boolean shortMod        = false;
 boolean longMod         = false;
-int debounceTime        =   100;
+int debounceTime        =   25;
 int shortTime           =  250;
 int longTime            =  500;
 long buttonTimer        =     0;
