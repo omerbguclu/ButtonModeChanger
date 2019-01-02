@@ -1,5 +1,4 @@
 int ledPin            =   7;
-int ledPin2            =   13;
 int switchPin         =   2;
 boolean led_state     = LOW;
 boolean lastButton    = LOW;
@@ -19,7 +18,6 @@ boolean longPressActive = false;
 
 void setup() {
   pinMode(ledPin, OUTPUT);
-  pinMode(ledPin2, OUTPUT);
   pinMode(switchPin, INPUT);
   Serial.begin(9600);
   modChange(ledPin, shortState);
@@ -62,8 +60,7 @@ void loop() {
     if ((millis() - buttonTimer > longPressTime) && (longPressActive == false)) {
       longPressActive = true;
       longMod = !longMod;
-      //modChange(ledPin, longState);
-      digitalWrite(ledPin, longMod);
+      modChange(ledPin, longState);
     }
   } else {
     if (buttonActive == true) {
@@ -71,8 +68,7 @@ void loop() {
         longPressActive = false;
       } else {
         shortMod = !shortMod;
-        //modChange(ledPin, shortState);
-        digitalWrite(ledPin2, shortMod);
+        modChange(ledPin, shortState);
       }
       buttonActive = false;
     }
