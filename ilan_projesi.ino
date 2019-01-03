@@ -1,6 +1,7 @@
+// Proje tamamlandı düzenlemeler ve isim değişiklikleri yapılacak teslim için hazırlanacak
 int ledPin            =   7;
 int switchPin         =   2;
-boolean ledState     = LOW;
+boolean ledState      = LOW;
 boolean lastButton    = LOW;
 boolean currentButton = LOW;
 #define longState         4
@@ -10,16 +11,16 @@ boolean currentButton = LOW;
 #define shortLoopCount    8
 #define longLoopCount    16
 
-long blinkInterval      =   500;
-long goTime             =     0;
-unsigned int counter    =     0;
-boolean shortMode        = false;
+long blinkInterval       =  1000;
+long goTime              =     0;
+unsigned int counter     =     0;
+boolean shortMode        =  true;
 boolean longMode         = false;
 
-int debounceTime        =   25;
-int shortTime           =  250;
-int longTime            =  500;
+int debounceTime        =    25;
 long buttonTimer        =     0;
+long shortModeTimer      =     0;
+long longModeTimer       =     0;
 long longPressTime      =  3000;
 boolean buttonActive    = false;
 boolean longPressActive = false;
@@ -27,7 +28,6 @@ boolean longPressActive = false;
 void setup() {
   pinMode(ledPin, OUTPUT);
   pinMode(switchPin, INPUT);
-  Serial.begin(9600);
 }
 
 void loop() {
@@ -39,37 +39,41 @@ void loop() {
     }
     if ((millis() - buttonTimer > longPressTime) && (longPressActive == false)) {
       longPressActive = true;
-      //longMod = true;
-      //modChange(ledPin, longState);
     }
   } else {
     if (buttonActive == true) {
       if (longPressActive == true) {// Long loop start
         longMode = true;
-        //modChange(ledPin, longState);
+        longModeTimer = millis();
         longPressActive = false;
       } else { // Short loop start
         shortMode = true;
-        //modChange(ledPin, shortState);
+        shortModeTimer = millis();
       }
       buttonActive = false;
     }
   }
   lastButton = currentButton;
-  if(longMode){
+  if (longMode) {
     if (millis() >= goTime) {
-      goFunction(longLoopCount, longLedBlink, blinkInterval, longMode);
-    }    
-  }else if (shortMode){
+      goFunction(longLoopCount, longLedBlink, blinkInterval);
+    }
+  } else if (shortMode) {
     if (millis() >= goTime) {
-      goFunction(shortLoopCount, shortLedBlink, blinkInterval, shortMode);
+      goFunction(shortLoopCount, shortLedBlink, blinkInterval);
+    }
+  }
+  if (longMode && shortMode) { 
+    counter = 0;
+    if (longModeTimer > shortModeTimer) {
+      shortMode = false;
+    } else {
+      longMode = false;
     }
   }
 }
 
-void goFunction(int loopCount, int blinkCount, int blinkInterval, boolean mode) {
-  Serial.print("Counter is ");
-  Serial.println(counter);
+void goFunction(int loopCount, int blinkCount, int blinkInterval) {
   if (counter < blinkCount) {
     counter++;
     goTime = millis() + blinkInterval;
@@ -81,7 +85,8 @@ void goFunction(int loopCount, int blinkCount, int blinkInterval, boolean mode) 
     ledState = !ledState;
     digitalWrite(ledPin, ledState);
   } else if (counter == loopCount) {
-    mode = false;
+    shortMode = false;
+    longMode = false;
     counter = 0;
   }
 }
