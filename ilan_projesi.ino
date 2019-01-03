@@ -49,7 +49,6 @@ void modChange(int ledPin, int ledState) {
   }
 }
 
-
 void loop() {
   currentButton = debounce(lastButton);
   if (currentButton == HIGH) {
@@ -59,15 +58,16 @@ void loop() {
     }
     if ((millis() - buttonTimer > longPressTime) && (longPressActive == false)) {
       longPressActive = true;
-      longMod = !longMod;
-      modChange(ledPin, longState);
+      //longMod = true;
+      //modChange(ledPin, longState);
     }
   } else {
     if (buttonActive == true) {
       if (longPressActive == true) {
+        modChange(ledPin, longState);
         longPressActive = false;
       } else {
-        shortMod = !shortMod;
+        //shortMod = true;
         modChange(ledPin, shortState);
       }
       buttonActive = false;
