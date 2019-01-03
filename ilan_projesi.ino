@@ -1,3 +1,4 @@
+// modChange delay fonksiyonu kullanmadan yapılacak. değişmemiş son hali
 int ledPin            =   7;
 int switchPin         =   2;
 boolean led_state     = LOW;
